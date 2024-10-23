@@ -1,0 +1,16 @@
+name: nonlinear-deformation-design
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - autopep8=1.6.0
+  - matplotlib=3.8.4
+  - numpy=1.24.0
+  - pandas=1.5.3
+  - pip=21.2.4
+  - pylint=2.12.2
+  - python=3.9.12
+  - pytorch=1.11.0
+  - scikit-learn=1.2.2
+  - scipy=1.7.3
