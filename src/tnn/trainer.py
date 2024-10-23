@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 import torch
 from matplotlib import pyplot as plt
-from utils import load_checkpoint, save_checkpoint
+from utils import load_checkpoint, save_checkpoint, get_device
 
 if TYPE_CHECKING:
     from os import PathLike
@@ -69,6 +69,9 @@ class Trainer:
         self._early_stopping = early_stopping
         self._train_losses = []
         self._valid_losses = []
+
+        self._device = get_device()
+        self._model.to(device=self._device)
 
         if file is not None:
             self._file = Path(file).resolve()
@@ -185,6 +188,9 @@ class Trainer:
         running_loss = 0
         for batch in data_loader:
             inputs, targets = batch
+
+            inputs = inputs.to(device=self._device)
+            targets = targets.to(device=self._device)
 
             if grad_enabled:
                 self._optimizer.zero_grad()

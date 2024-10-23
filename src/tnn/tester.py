@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import time
 import torch
-
+from utils import get_device
 
 if TYPE_CHECKING:
     from torch.nn import Module
@@ -35,6 +35,9 @@ class Tester:
         self._criterion = criterion
         self._test_loader = test_loader
 
+        self._device = get_device()
+        self._model.to(device=self._device)
+
     def test(self,
              verbose: bool = True) -> float:
         """Testing logic.
@@ -61,6 +64,9 @@ class Tester:
 
         for batch in self._test_loader:
             inputs, targets = batch
+
+            inputs = inputs.to(device=self._device)
+            targets = targets.to(device=self._device)
 
             with torch.set_grad_enabled(mode=False):
                 outputs = self._model(inputs)
