@@ -12,11 +12,10 @@ class TNNDataset(Dataset):
 
         Parameters
         ----------
-        performance : (`N`, 17) torch.Tensor
-            The performance vectors.
-            * `N`: Number of samples.
-        parameters : (`N`, 11) torch.Tensor
-            The parameter vectors.
+        performance : (N, 17) torch.Tensor
+            Design vectors.
+        parameters : (N, 11) torch.Tensor
+            Performance vectors.
 
         """
         self._performance = performance

@@ -80,7 +80,7 @@ def main() -> None:
                           optimizer=optimizer,
                           train_loader=train_loader,
                           valid_loader=valid_loader,
-                          epochs=5,
+                          epochs=500,
                           resume=False,
                           save_file=save_file)
 
