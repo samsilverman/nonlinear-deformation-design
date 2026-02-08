@@ -1,3 +1,5 @@
+from .calculate_stiffness import calculate_stiffness
+from .calculate_work import calculate_work
 from .confidence_interval import confidence_interval
 from .data_processor import get_parameters_processor, get_performance_processor
 from .load_data import load_data

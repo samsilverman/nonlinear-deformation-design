@@ -11,7 +11,7 @@ def load_data() -> Tuple[np.ndarray, np.ndarray]:
     -------
     parameters : (N, 16) numpy.ndarray
         GCS design parameters.
-    displacements : (N, 101) numpy.ndarray
+    performance : (N, 101) numpy.ndarray
         Uniaxial compression data. Columns:
         - 1: Maximum displacement
         - 2...101: Forces

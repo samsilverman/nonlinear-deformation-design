@@ -1,32 +1,34 @@
 from __future__ import annotations
-
 import numpy as np
 
 
-def calculate_stiffness(displacements: np.ndarray, forces: np.ndarray) -> np.ndarray:
+def calculate_stiffness(performance: np.ndarray) -> np.ndarray:
     """Calculates the stiffness for force-displacement curves.
 
     Parameters
     ----------
-    displacements : (`N`, `M`) numpy.ndarray
-        The displacements (mm).
-        * `N`: Number of samples.
-        * `M`: Number of points in force-displacement curves.
-    forces : (`N`, `M`) numpy.ndarray
-        The forces (N).
+    performance : (N, 101) numpy.ndarray
+        Uniaxial compression data. Columns:
+        - 1: Maximum displacement
+        - 2...101: Forces
 
     Returns
     -------
-    stiffness : (`N`,) numpy.ndarray
-        The stiffness (N / mm).
+    stiffnesses : (N,) numpy.ndarray
+        Stiffness (N/mm) for force-displacement curves.
 
     """
+    max_displacements = performance[:, 0].reshape(-1, 1)
+    displacements = max_displacements * np.linspace(start=0, stop=1, num=100)
+    forces = performance[:, 1:]
+
     # only look at beginning 25% of curves
     x = np.array_split(ary=displacements, indices_or_sections=4, axis=1)[0]
     y = np.array_split(ary=forces, indices_or_sections=4, axis=1)[0]
 
     stiffness = []
 
+    # Report the stiffness as the maximum slope for data windows of size 5
     window_size = 5
 
     for index in range(x.shape[0]):
