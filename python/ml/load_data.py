@@ -1,40 +1,38 @@
 from __future__ import annotations
 from typing import Tuple
 from pathlib import Path
+import numpy as np
 import pandas as pd
 
-
-def load_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_data() -> Tuple[np.ndarray, np.ndarray]:
     """Load the data.
 
     Returns
     -------
-    parameters : (12705, 12) numpy.ndarray
+    parameters : (N, 16) numpy.ndarray
         GCS design parameters.
-    performance : (12705, 101) numpy.ndarray
-        GCS uniaxial compression data. Columns:
+    displacements : (N, 101) numpy.ndarray
+        Uniaxial compression data. Columns:
         - 1: Maximum displacement
         - 2...101: Forces
 
     """
-    data_dir = Path(__file__).resolve().parent.parent.parent / 'data'
+    data_folder = Path(__file__).parent.parent.parent.resolve() / 'data'
 
-    parameters = pd.read_csv(filepath_or_buffer=data_dir / 'parameters.csv',
+    parameters = pd.read_csv(filepath_or_buffer=data_folder / 'parameters.csv',
                              delimiter=',',
                              header=0)
 
-    max_displacements = pd.read_csv(filepath_or_buffer=data_dir / 'displacements.csv',
+    displacements = pd.read_csv(filepath_or_buffer=data_folder / 'displacements.csv',
                                 delimiter=',',
-                                index_col=None,
                                 header=0)
 
-    forces = pd.read_csv(filepath_or_buffer=data_dir / 'forces.csv',
+    forces = pd.read_csv(filepath_or_buffer=data_folder / 'forces.csv',
                          delimiter=',',
                          header=0)
 
-    # Remove ID_Number column
-    parameters = parameters.iloc[:, 1:]
-    max_displacements = max_displacements.iloc[:, 1:]
-    forces = forces.iloc[:, 1:]
+    parameters = parameters.iloc[:, 1:].to_numpy()
+    displacements = displacements.iloc[:, 1:].to_numpy()
+    forces = forces.iloc[:, 1:].to_numpy()
 
-    return parameters, pd.concat(objs=(max_displacements, forces), axis=1)
+    return parameters, np.hstack(tup=(displacements, forces))

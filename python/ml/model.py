@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING, Tuple
 import torch
 from torch import nn
@@ -42,18 +41,14 @@ class TNN(nn.Module):
         )
 
     def f(self) -> nn.Sequential:
-        """The forward design netwokr.
-
-        Returns
-        -------
-        f : torch.nn.Sequential
-            The forward design network.
+        """Forward design network.
 
         """
         return self.f_
 
-    def freeze_f(self, freeze: bool = True) -> None:
-        """Freeze the layers of the the forward design network.
+    def freeze_f(self,
+                 freeze: bool = True) -> None:
+        """Freeze the layers of the the forward design model.
 
         Parameters
         ----------
@@ -64,7 +59,8 @@ class TNN(nn.Module):
         for parameter in self.f_.parameters():
             parameter.requires_grad = not freeze
 
-    def forward_design(self, inputs: Tensor) -> Tensor:
+    def forward_design(self,
+                       inputs: Tensor) -> Tensor:
         """Forward design.
 
         Parameters
@@ -81,7 +77,9 @@ class TNN(nn.Module):
         outputs = self.f_(inputs)
         return outputs
 
-    def inverse_design(self, inputs: Tensor, binarize: bool = False) -> Tensor:
+    def inverse_design(self,
+                       inputs: Tensor,
+                       binarize: bool = False) -> Tensor:
         """Inverse design.
 
         Parameters
@@ -107,7 +105,8 @@ class TNN(nn.Module):
 
         return outputs
 
-    def forward(self, inputs: Tensor) -> Tuple[Tensor, Tensor]:
+    def forward(self,
+                inputs: Tensor) -> Tuple[Tensor, Tensor]:
         """Forward propagation.
 
         Parameters

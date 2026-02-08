@@ -8,18 +8,21 @@ def calculate_work(displacements: np.ndarray, forces: np.ndarray) -> np.ndarray:
 
     Parameters
     ----------
-    displacements : (N, M) np.ndarray
+    displacements : (`N`, `M`) numpy.ndarray
         The displacements (mm).
-    forces : (N, M) np.ndarray
+        * `N`: Number of samples.
+        * `M`: Number of points in force-displacement curves.
+    forces : (`N`, `M`) numpy.ndarray
         The forces (N).
 
     Returns
     -------
-    work : (N,) np.ndarray
+    work : (`N`,) numpy.ndarray
         The work (J).
 
     """
     work = np.trapz(y=forces, x=displacements, axis=1)
+
     # mJ to J
     work /= 1000
 

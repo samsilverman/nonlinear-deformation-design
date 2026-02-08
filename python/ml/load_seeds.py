@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import List
 from pathlib import Path
 
@@ -13,7 +12,7 @@ def load_seeds() -> List[int]:
         Seeds.
 
     """
-    file = Path(__file__).resolve().parent.parent / 'models' / 'seeds.txt'
+    file = Path(__file__).resolve().parent.parent.parent / 'models' / 'seeds.txt'
 
     seeds = []
     with open(file, 'r', encoding='utf-8') as f:

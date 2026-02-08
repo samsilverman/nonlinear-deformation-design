@@ -1,21 +1,21 @@
 from __future__ import annotations
-
 from typing import Tuple
 import torch
 from torch.utils.data import Dataset
 
 
 class TNNDataset(Dataset):
-    """Custom dataset for TNN."""
+    """Custom `torch.utils.data.Dataset` for inverse design training."""
 
     def __init__(self, performance: torch.Tensor, parameters: torch.Tensor) -> None:
         """Initialize TNNDataset.
 
         Parameters
         ----------
-        performance : (N, 11) torch.Tensor
+        performance : (`N`, 17) torch.Tensor
             The performance vectors.
-        parameters : (N, 11) torch.Tensor
+            * `N`: Number of samples.
+        parameters : (`N`, 11) torch.Tensor
             The parameter vectors.
 
         """

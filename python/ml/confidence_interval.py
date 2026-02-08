@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import List, Tuple
 import scipy.stats as stats
 import numpy as np

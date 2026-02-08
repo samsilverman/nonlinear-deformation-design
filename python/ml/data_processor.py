@@ -6,7 +6,6 @@ from sklearn.decomposition import PCA
 from utils import InvertibleColumnTransformer
 
 
-
 def get_parameters_processor() -> InvertibleColumnTransformer:
     """Data preprocessor for GCS design parameters.
 

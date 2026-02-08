@@ -7,33 +7,32 @@ from pathlib import Path
 import numpy as np
 import torch
 from torch.utils.data import TensorDataset, DataLoader
-from load_seeds import load_seeds
-from ml import load_data, get_parameters_processor, get_performance_processor, TNN, WeightedMSELoss, confidence_interval
-from utils import set_seed, split_indices, Tester, load_state_dict
+from utils import set_seed, load_state_dict, split_indices, Tester
+from ml import load_data, TNN, WeightedMSELoss, get_parameters_processor, get_performance_processor, load_seeds, confidence_interval
 
 
 def main() -> None:
     seeds = load_seeds()
 
+    parameters, performance = load_data()
+
     losses = []
 
     for seed in seeds:
-        print(f'seed: {seed}')
+        print(f'Seed: {seed}')
 
         # Setup
         set_seed(seed=seed)
 
         # Data preprocessing
-        parameters, performance = load_data()
-
         train_indices, _, test_indices = split_indices(num_samples=parameters.shape[0],
-                                                        percent_train=0.8,
-                                                        percent_valid=0.1)
+                                                       percent_train=0.8,
+                                                       percent_valid=0.1)
 
-        parameters_train = parameters.iloc[train_indices]
-        performance_train = performance.iloc[train_indices]
-        parameters_test = parameters.iloc[test_indices]
-        performance_test = performance.iloc[test_indices]
+        parameters_train = parameters[train_indices]
+        performance_train = performance[train_indices]
+        parameters_test = parameters[test_indices]
+        performance_test = performance[test_indices]
 
         parameters_processor = get_parameters_processor()
         performance_processor = get_performance_processor()
@@ -42,15 +41,15 @@ def main() -> None:
         performance_processor.fit(performance_train)
 
         parameters_test = parameters_processor.transform(parameters_test)
-        performance_test = performance_processor.fit_transform(performance_test)
+        performance_test = performance_processor.transform(performance_test)
 
-        # Datasets
-        test_dataset = TensorDataset(torch.from_numpy(parameters_test).to(dtype=torch.float32),
-                                     torch.from_numpy(performance_test).to(dtype=torch.float32))
+        # Dataset
+        test_dataset = TensorDataset(torch.from_numpy(parameters_test).to(torch.float32),
+                                     torch.from_numpy(performance_test).to(torch.float32))
 
         test_loader = DataLoader(dataset=test_dataset,
-                                batch_size=16,
-                                shuffle=True)
+                                 batch_size=16,
+                                 shuffle=True)
 
         # Model
         model = TNN().f()
@@ -62,12 +61,13 @@ def main() -> None:
         forces_processor = performance_processor.named_transformers_['forces']
         pca_step = forces_processor.named_steps['pca']
         weights = pca_step.explained_variance_
-        weights /= np.sum(a=weights)
-        weights = np.insert(arr=weights, obj=0, values=1)
+        weights /= np.sum(weights)
+        weights = np.insert(arr=weights,
+                            obj=0,
+                            values=1)
         weights = torch.tensor(data=weights, dtype=torch.float32)
 
-        criterion = torch.nn.MSELoss()
-        # criterion = WeightedMSELoss(weights=weights)
+        criterion = WeightedMSELoss(weights=weights)
 
         # Test
         tester = Tester(model=model,
@@ -75,6 +75,7 @@ def main() -> None:
                         test_loader=test_loader)
 
         loss = tester.test(verbose=False)
+
         print(f'\tloss: {loss}')
 
         losses.append(loss)
@@ -83,6 +84,7 @@ def main() -> None:
 
     print(r'95% confidence interval:')
     print(f'\t{mean}±{interval}')
+
 
 if __name__ == '__main__':
     main()

@@ -8,14 +8,16 @@ def calculate_stiffness(displacements: np.ndarray, forces: np.ndarray) -> np.nda
 
     Parameters
     ----------
-    displacements : (N, M) np.ndarray
+    displacements : (`N`, `M`) numpy.ndarray
         The displacements (mm).
-    forces : (N, M) np.ndarray
+        * `N`: Number of samples.
+        * `M`: Number of points in force-displacement curves.
+    forces : (`N`, `M`) numpy.ndarray
         The forces (N).
 
     Returns
     -------
-    stiffness : (N,) np.ndarray
+    stiffness : (`N`,) numpy.ndarray
         The stiffness (N / mm).
 
     """
