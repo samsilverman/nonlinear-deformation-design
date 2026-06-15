@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nonlinear-deformation-design"
+version = "1.0.0"
+description = "This repository contains the code for our 3D Printing and Additive Manufacturing 2025 paper \"Data-Driven Nonlinear Deformation Design of 3D-Printable Shells.\""
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Samuel Silverman et al." },
+]
+maintainers = [
+  { name = "Samuel Silverman", email = "sssilver@bu.edu" },
+]
+dependencies = [
+  "gcs-shape==1.3.0",
+  "matplotlib==3.9.2",
+  "meshio==5.3.5",
+  "numpy==1.24.0",
+  "pandas==2.3.3",
+  "pyvista==0.46.5",
+  "scikit-learn==1.2.2",
+  "torch==2.2.2",
+  "tqdm==4.68.2",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
