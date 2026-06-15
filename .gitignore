@@ -1,11 +1,5 @@
-# Mac stuff
 .DS_Store
-
-# VSCode stuff
 .vscode/
-
-# Python stuff
 __pycache__/
-
-# Training checkpoints
-*-checkpoint.pt
+*.py[cod]
+*.egg-info/
