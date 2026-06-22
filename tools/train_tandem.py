@@ -82,7 +82,7 @@ def validate_cli_arguments(args: Namespace, parser: ArgumentParser) -> None:
     if args.weight_decay <= 0:
         parser.error(f'--weight-decay must be positive, got {args.weight_decay}.')
 
-    if args.alpha <= 0:
+    if args.alpha < 0:
         parser.error(f'--alpha must be positive, got {args.alpha}.')
 
     if args.resume:
